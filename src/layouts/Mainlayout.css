@@ -11,3 +11,34 @@
 
   background: #f8fafc;
 }
+@media (max-width: 768px) {
+
+  .sidebar {
+    width: 72px;
+  }
+
+  .sidebar-header h2,
+  .sidebar-header span,
+  .nav-item span,
+  .logout-button span {
+    display: none;
+  }
+
+  .sidebar-header {
+    justify-content: center;
+  }
+
+  .nav-item {
+    justify-content: center;
+  }
+
+  .logout-button {
+    justify-content: center;
+  }
+
+  .main-content {
+    margin-left: 72px;
+    padding: 20px;
+  }
+
+}

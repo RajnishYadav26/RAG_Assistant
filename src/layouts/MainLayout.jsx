@@ -1,11 +1,19 @@
 import { Outlet } from "react-router-dom";
 
+import Sidebar from "../components/layout/Sidebar";
+
+import "./MainLayout.css";
+
 function MainLayout() {
   return (
-    <div>
-      <h1>RAG Assistant</h1>
+    <div className="app-layout">
 
-      <Outlet />
+      <Sidebar />
+
+      <main className="main-content">
+        <Outlet />
+      </main>
+
     </div>
   );
 }

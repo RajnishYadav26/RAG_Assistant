@@ -1,171 +1,384 @@
-import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-function Register() {
+import { useForm } from "react-hook-form";
 
+import {
+  Link,
+  useNavigate,
+} from "react-router-dom";
+
+import {
+  Eye,
+  EyeOff,
+  User,
+  Mail,
+  Lock,
+  Loader2,
+} from "lucide-react";
+
+import "./Register.css";
+
+function Register() {
   const navigate = useNavigate();
 
-  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] =
+    useState(false);
+
+  const [
+    showConfirmPassword,
+    setShowConfirmPassword,
+  ] = useState(false);
+
+  const [serverError, setServerError] =
+    useState("");
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    formState: {
+      errors,
+      isSubmitting,
+    },
   } = useForm();
-
 
   const password = watch("password");
 
 
   const onSubmit = async (data) => {
+    setServerError("");
 
     try {
 
-      setError("");
+      // Backend registration will be connected later.
 
-      /*
-       * Backend registration API
-       * will be connected later.
-       */
+      await new Promise((resolve) =>
+        setTimeout(resolve, 1200)
+      );
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      console.log("Registration data:", data);
+      console.log(
+        "Registration data:",
+        data
+      );
 
       navigate("/");
 
-    } catch (err) {
+    } catch (error) {
 
-      setError("Registration failed. Please try again.");
+      setServerError(
+        "Unable to create your account. Please try again."
+      );
 
     }
-
   };
 
 
   return (
-    <div>
+    <div className="auth-page">
 
-      <h1>Create Account</h1>
+      <div className="auth-card register-card">
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="auth-logo">
+          R
+        </div>
 
 
-        <div>
+        <div className="auth-header">
 
-          <label>Name</label>
+          <h1>
+            Create your account
+          </h1>
 
-          <input
-            type="text"
-            placeholder="Enter your name"
-            {...register("name", {
-              required: "Name is required",
-              minLength: {
-                value: 2,
-                message: "Name must contain at least 2 characters",
-              },
-            })}
-          />
-
-          {errors.name && (
-            <p>{errors.name.message}</p>
-          )}
+          <p>
+            Start using your Enterprise RAG Assistant
+          </p>
 
         </div>
 
 
-        <div>
-
-          <label>Email</label>
-
-          <input
-            type="email"
-            placeholder="Enter your email"
-            {...register("email", {
-              required: "Email is required",
-              pattern: {
-                value: /^\S+@\S+$/i,
-                message: "Please enter a valid email",
-              },
-            })}
-          />
-
-          {errors.email && (
-            <p>{errors.email.message}</p>
-          )}
-
-        </div>
-
-
-        <div>
-
-          <label>Password</label>
-
-          <input
-            type="password"
-            placeholder="Create a password"
-            {...register("password", {
-              required: "Password is required",
-              minLength: {
-                value: 8,
-                message: "Password must contain at least 8 characters",
-              },
-            })}
-          />
-
-          {errors.password && (
-            <p>{errors.password.message}</p>
-          )}
-
-        </div>
-
-
-        <div>
-
-          <label>Confirm Password</label>
-
-          <input
-            type="password"
-            placeholder="Confirm your password"
-            {...register("confirmPassword", {
-              required: "Please confirm your password",
-              validate: (value) =>
-                value === password || "Passwords do not match",
-            })}
-          />
-
-          {errors.confirmPassword && (
-            <p>{errors.confirmPassword.message}</p>
-          )}
-
-        </div>
-
-
-        {error && (
-          <p>{error}</p>
+        {serverError && (
+          <div className="auth-error">
+            {serverError}
+          </div>
         )}
 
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
+        <form
+          className="auth-form"
+          onSubmit={handleSubmit(onSubmit)}
         >
-          {isSubmitting ? "Creating account..." : "Create Account"}
-        </button>
 
-      </form>
+          {/* Name */}
+
+          <div className="form-group">
+
+            <label htmlFor="name">
+              Full name
+            </label>
+
+            <div
+              className={
+                errors.name
+                  ? "input-wrapper input-error"
+                  : "input-wrapper"
+              }
+            >
+
+              <User size={18} />
+
+              <input
+                id="name"
+                type="text"
+                placeholder="Your name"
+                autoComplete="name"
+                {...register("name", {
+                  required:
+                    "Your name is required",
+
+                  minLength: {
+                    value: 2,
+
+                    message:
+                      "Name must be at least 2 characters",
+                  },
+                })}
+              />
+
+            </div>
+
+            {errors.name && (
+              <span className="field-error">
+                {errors.name.message}
+              </span>
+            )}
+
+          </div>
 
 
-      <p>
-        Already have an account?{" "}
+          {/* Email */}
 
-        <Link to="/">
-          Login
-        </Link>
+          <div className="form-group">
 
-      </p>
+            <label htmlFor="email">
+              Email address
+            </label>
+
+            <div
+              className={
+                errors.email
+                  ? "input-wrapper input-error"
+                  : "input-wrapper"
+              }
+            >
+
+              <Mail size={18} />
+
+              <input
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                autoComplete="email"
+                {...register("email", {
+                  required:
+                    "Email address is required",
+
+                  pattern: {
+                    value:
+                      /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+
+                    message:
+                      "Please enter a valid email address",
+                  },
+                })}
+              />
+
+            </div>
+
+            {errors.email && (
+              <span className="field-error">
+                {errors.email.message}
+              </span>
+            )}
+
+          </div>
+
+
+          {/* Password */}
+
+          <div className="form-group">
+
+            <label htmlFor="password">
+              Password
+            </label>
+
+            <div
+              className={
+                errors.password
+                  ? "input-wrapper input-error"
+                  : "input-wrapper"
+              }
+            >
+
+              <Lock size={18} />
+
+              <input
+                id="password"
+                type={
+                  showPassword
+                    ? "text"
+                    : "password"
+                }
+                placeholder="Create a password"
+                autoComplete="new-password"
+                {...register("password", {
+                  required:
+                    "Password is required",
+
+                  minLength: {
+                    value: 8,
+
+                    message:
+                      "Password must be at least 8 characters",
+                  },
+                })}
+              />
+
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() =>
+                  setShowPassword(
+                    !showPassword
+                  )
+                }
+              >
+                {showPassword ? (
+                  <EyeOff size={18} />
+                ) : (
+                  <Eye size={18} />
+                )}
+              </button>
+
+            </div>
+
+            {errors.password && (
+              <span className="field-error">
+                {errors.password.message}
+              </span>
+            )}
+
+          </div>
+
+
+          {/* Confirm password */}
+
+          <div className="form-group">
+
+            <label htmlFor="confirmPassword">
+              Confirm password
+            </label>
+
+            <div
+              className={
+                errors.confirmPassword
+                  ? "input-wrapper input-error"
+                  : "input-wrapper"
+              }
+            >
+
+              <Lock size={18} />
+
+              <input
+                id="confirmPassword"
+                type={
+                  showConfirmPassword
+                    ? "text"
+                    : "password"
+                }
+                placeholder="Confirm your password"
+                autoComplete="new-password"
+                {...register(
+                  "confirmPassword",
+                  {
+                    required:
+                      "Please confirm your password",
+
+                    validate: (value) =>
+                      value === password ||
+                      "Passwords do not match",
+                  }
+                )}
+              />
+
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() =>
+                  setShowConfirmPassword(
+                    !showConfirmPassword
+                  )
+                }
+              >
+                {showConfirmPassword ? (
+                  <EyeOff size={18} />
+                ) : (
+                  <Eye size={18} />
+                )}
+              </button>
+
+            </div>
+
+            {errors.confirmPassword && (
+              <span className="field-error">
+                {
+                  errors.confirmPassword
+                    .message
+                }
+              </span>
+            )}
+
+          </div>
+
+
+          {/* Submit */}
+
+          <button
+            type="submit"
+            className="auth-submit"
+            disabled={isSubmitting}
+          >
+
+            {isSubmitting ? (
+              <>
+                <Loader2
+                  size={18}
+                  className="spin"
+                />
+
+                Creating account...
+              </>
+            ) : (
+              "Create account"
+            )}
+
+          </button>
+
+        </form>
+
+
+        <div className="auth-footer">
+
+          <span>
+            Already have an account?
+          </span>
+
+          <Link to="/">
+            Sign in
+          </Link>
+
+        </div>
+
+      </div>
 
     </div>
   );
