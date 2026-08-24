@@ -9,24 +9,69 @@ import History from "../pages/History";
 import Settings from "../pages/Settings";
 import NotFound from "../pages/NotFound";
 
+import MainLayout from "../layouts/MainLayout";
+import ProtectedRoute from "./ProtectedRoute";
+
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
 
-      <Route path="/register" element={<Register />} />
+      {/* Public pages */}
 
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route
+        path="/"
+        element={<Login />}
+      />
 
-      <Route path="/chat" element={<Chat />} />
+      <Route
+        path="/register"
+        element={<Register />}
+      />
 
-      <Route path="/upload" element={<Upload />} />
 
-      <Route path="/history" element={<History />} />
+      {/* Protected application */}
 
-      <Route path="/settings" element={<Settings />} />
+      <Route element={<ProtectedRoute />}>
 
-      <Route path="*" element={<NotFound />} />
+        <Route element={<MainLayout />}>
+
+          <Route
+            path="/dashboard"
+            element={<Dashboard />}
+          />
+
+          <Route
+            path="/chat"
+            element={<Chat />}
+          />
+
+          <Route
+            path="/upload"
+            element={<Upload />}
+          />
+
+          <Route
+            path="/history"
+            element={<History />}
+          />
+
+          <Route
+            path="/settings"
+            element={<Settings />}
+          />
+
+        </Route>
+
+      </Route>
+
+
+      {/* Unknown URL */}
+
+      <Route
+        path="*"
+        element={<NotFound />}
+      />
+
     </Routes>
   );
 }
