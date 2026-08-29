@@ -1,3 +1,4 @@
+
 * {
   margin: 0;
   padding: 0;
@@ -15,18 +16,32 @@
 
   color: #1f2937;
   background: #f8fafc;
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
 }
 
 body {
   min-width: 320px;
   min-height: 100vh;
+
+  background: #f8fafc;
 }
 
 button,
 input,
-textarea {
+textarea,
+select {
   font: inherit;
 }
 
@@ -38,3 +53,9 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+img {
+  max-width: 100%;
+  display: block;
+}
+

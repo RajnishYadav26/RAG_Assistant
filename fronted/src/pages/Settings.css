@@ -1,0 +1,214 @@
+.settings-page {
+  min-height: 100vh;
+
+  background: #f8fafc;
+}
+
+.settings-header {
+  padding: 28px 32px;
+
+  background: white;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.settings-header h1 {
+  margin: 0;
+
+  font-size: 24px;
+
+  color: #111827;
+}
+
+.settings-header p {
+  margin: 7px 0 0;
+
+  font-size: 14px;
+
+  color: #6b7280;
+}
+
+.settings-content {
+  max-width: 850px;
+
+  margin: 0 auto;
+
+  padding: 32px;
+}
+
+.settings-section {
+  margin-bottom: 18px;
+
+  padding: 22px;
+
+  background: white;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 12px;
+}
+
+.settings-section-title {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  margin-bottom: 20px;
+
+  color: #374151;
+}
+
+.settings-section-title h2 {
+  margin: 0;
+
+  font-size: 16px;
+
+  color: #111827;
+}
+
+.settings-section-title p {
+  margin: 4px 0 0;
+
+  font-size: 12px;
+
+  color: #9ca3af;
+}
+
+.profile-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid #f1f5f9;
+}
+
+.profile-avatar {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #111827;
+
+  color: white;
+
+  font-weight: 600;
+}
+
+.profile-card h3 {
+  margin: 0;
+
+  font-size: 14px;
+
+  color: #111827;
+}
+
+.profile-card p {
+  margin: 4px 0 0;
+
+  font-size: 12px;
+
+  color: #6b7280;
+}
+
+.settings-row {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid #f1f5f9;
+}
+
+.settings-row h3 {
+  margin: 0;
+
+  font-size: 13px;
+
+  font-weight: 500;
+
+  color: #374151;
+}
+
+.settings-row p {
+  margin: 4px 0 0;
+
+  font-size: 12px;
+
+  color: #9ca3af;
+}
+
+.settings-row button {
+  padding: 8px 13px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 7px;
+
+  background: white;
+
+  color: #374151;
+
+  cursor: pointer;
+}
+
+.settings-logout {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 12px;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 9px;
+
+  background: white;
+
+  color: #374151;
+
+  cursor: pointer;
+
+  font-size: 13px;
+}
+
+.settings-logout:hover {
+  background: #f8fafc;
+}
+
+@media (max-width: 768px) {
+
+  .settings-header {
+    padding: 20px;
+  }
+
+  .settings-content {
+    padding: 20px 16px;
+  }
+
+  .settings-section {
+    padding: 18px;
+  }
+
+}

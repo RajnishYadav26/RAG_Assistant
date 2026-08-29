@@ -2,27 +2,59 @@ import {
   FileText,
   MessageSquare,
   Upload,
+  ArrowRight,
 } from "lucide-react";
 
 import { Link } from "react-router-dom";
 
-function Dashboard() {
-  return (
-    <div className="dashboard">
+import "./Dashboard.css";
 
-      <div className="page-header">
+function Dashboard() {
+  const stats = [
+    {
+      title: "Documents",
+      value: "12",
+      icon: FileText,
+    },
+    {
+      title: "Questions Asked",
+      value: "48",
+      icon: MessageSquare,
+    },
+  ];
+
+  const recentDocuments = [
+    {
+      name: "Company Policy.pdf",
+      date: "Today",
+    },
+    {
+      name: "Project Documentation.pdf",
+      date: "Yesterday",
+    },
+    {
+      name: "Research Report.pdf",
+      date: "Aug 25, 2026",
+    },
+  ];
+
+  return (
+    <div className="dashboard-page">
+
+      <div className="dashboard-header">
 
         <div>
-          <h1>Welcome back</h1>
+          <h1>Dashboard</h1>
 
           <p>
-            Ask questions and get answers from your documents.
+            Manage your documents and ask questions
+            using your knowledge base.
           </p>
         </div>
 
         <Link
           to="/upload"
-          className="primary-button"
+          className="dashboard-upload-button"
         >
           <Upload size={18} />
           Upload Document
@@ -30,86 +62,100 @@ function Dashboard() {
 
       </div>
 
-      <div className="stats-grid">
 
-        <div className="stat-card">
-          <FileText size={24} />
+      <div className="dashboard-content">
 
-          <div>
-            <span>Documents</span>
-            <strong>0</strong>
-          </div>
+        <div className="dashboard-stats">
+
+          {stats.map((stat) => {
+            const Icon = stat.icon;
+
+            return (
+              <div
+                className="dashboard-stat-card"
+                key={stat.title}
+              >
+                <div className="dashboard-stat-icon">
+                  <Icon size={21} />
+                </div>
+
+                <div>
+                  <p>{stat.title}</p>
+
+                  <h2>{stat.value}</h2>
+                </div>
+              </div>
+            );
+          })}
+
         </div>
 
-        <div className="stat-card">
-          <MessageSquare size={24} />
 
-          <div>
-            <span>Conversations</span>
-            <strong>0</strong>
-          </div>
-        </div>
+        <div className="dashboard-grid">
 
-        <div className="stat-card">
-          <MessageSquare size={24} />
+          <section className="dashboard-section">
 
-          <div>
-            <span>Questions Asked</span>
-            <strong>0</strong>
-          </div>
-        </div>
+            <div className="dashboard-section-header">
 
-      </div>
+              <h2>Recent Documents</h2>
 
-      <div className="dashboard-section">
+              <Link to="/upload">
+                View all
+                <ArrowRight size={15} />
+              </Link>
 
-        <div className="section-header">
+            </div>
 
-          <div>
-            <h2>Get started</h2>
+
+            <div className="dashboard-document-list">
+
+              {recentDocuments.map((document) => (
+
+                <div
+                  className="dashboard-document"
+                  key={document.name}
+                >
+
+                  <div className="dashboard-document-icon">
+                    <FileText size={19} />
+                  </div>
+
+                  <div>
+                    <h3>{document.name}</h3>
+                    <p>{document.date}</p>
+                  </div>
+
+                </div>
+
+              ))}
+
+            </div>
+
+          </section>
+
+
+          <section className="dashboard-section dashboard-start">
+
+            <div className="dashboard-start-icon">
+              <MessageSquare size={25} />
+            </div>
+
+            <h2>Start a conversation</h2>
 
             <p>
-              Upload your documents and start asking questions.
+              Ask questions and get answers based
+              on your uploaded documents.
             </p>
-          </div>
 
-        </div>
+            <Link
+              to="/chat"
+              className="dashboard-chat-button"
+            >
+              Start Chat
+              <ArrowRight size={17} />
+            </Link>
 
-        <div className="quick-actions">
-
-          <Link
-            to="/upload"
-            className="action-card"
-          >
-            <Upload size={28} />
-
-            <div>
-              <h3>Upload documents</h3>
-
-              <p>
-                Add PDFs, Word files, text files and more.
-              </p>
-            </div>
-
-            <span>→</span>
-          </Link>
-
-          <Link
-            to="/chat"
-            className="action-card"
-          >
-            <MessageSquare size={28} />
-
-            <div>
-              <h3>Start a conversation</h3>
-
-              <p>
-                Ask questions about your documents.
-              </p>
-            </div>
-
-            <span>→</span>
-          </Link>
+          </section>
 
         </div>
 

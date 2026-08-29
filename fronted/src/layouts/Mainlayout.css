@@ -3,42 +3,17 @@
 }
 
 .main-content {
-  margin-left: 260px;
-
   min-height: 100vh;
 
-  padding: 32px;
-
-  background: #f8fafc;
+  margin-left: 250px;
 }
+
 @media (max-width: 768px) {
 
-  .sidebar {
-    width: 72px;
-  }
-
-  .sidebar-header h2,
-  .sidebar-header span,
-  .nav-item span,
-  .logout-button span {
-    display: none;
-  }
-
-  .sidebar-header {
-    justify-content: center;
-  }
-
-  .nav-item {
-    justify-content: center;
-  }
-
-  .logout-button {
-    justify-content: center;
-  }
-
   .main-content {
-    margin-left: 72px;
-    padding: 20px;
+    margin-left: 0;
+
+    padding-top: 58px;
   }
 
 }
