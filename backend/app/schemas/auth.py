@@ -17,11 +17,11 @@ class UserResponse(BaseModel):
     name: str
     email: EmailStr
 
-    model_config = {
-        "from_attributes": True
-    }
+    class Config:
+        from_attributes = True
 
 
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str
+    user: UserResponse

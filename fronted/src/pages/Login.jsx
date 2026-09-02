@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import "./Auth.css";
-import {
-  Link,
-  useNavigate,
-} from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 import {
   Eye,
   EyeOff,
@@ -15,19 +10,17 @@ import {
 } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
+import apiClient from "../api/apiClient";
 
+import "./Auth.css";
 import "./Login.css";
 
 function Login() {
   const navigate = useNavigate();
-
   const { login } = useAuth();
 
-  const [showPassword, setShowPassword] =
-    useState(false);
-
-  const [serverError, setServerError] =
-    useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [serverError, setServerError] = useState("");
 
   const {
     register,
@@ -38,50 +31,68 @@ function Login() {
     },
   } = useForm();
 
-
   const onSubmit = async (data) => {
     setServerError("");
 
     try {
-      // Temporary frontend login.
-      // FastAPI will replace this later.
-
-      await new Promise((resolve) =>
-        setTimeout(resolve, 1200)
+      // Send login request to FastAPI
+      const response = await apiClient.post(
+        "/auth/login",
+        {
+          email: data.email,
+          password: data.password,
+        }
       );
 
-      login({
-        id: "demo-user",
-        name: "Demo User",
+      console.log("LOGIN SUCCESS:", response.data);
+
+      // Backend currently returns:
+      // {
+      //   access_token: "...",
+      //   token_type: "bearer"
+      // }
+
+      const { access_token } = response.data;
+
+      if (!access_token) {
+        throw new Error(
+          "Access token was not returned by the server."
+        );
+      }
+
+      // Save authentication state
+      login(access_token, {
         email: data.email,
       });
 
-      navigate("/dashboard");
-
+      // Go to protected dashboard
+      navigate("/dashboard", {
+        replace: true,
+      });
     } catch (error) {
+      console.error(
+        "LOGIN ERROR:",
+        error.response?.data || error
+      );
+
       setServerError(
-        "Unable to sign in. Please try again."
+        error.response?.data?.detail ||
+          "Unable to sign in. Please check your email and password."
       );
     }
   };
 
-
   return (
     <div className="auth-page">
-
       <div className="auth-card">
 
         {/* Logo */}
-
         <div className="auth-logo">
           R
         </div>
 
-
         {/* Header */}
-
         <div className="auth-header">
-
           <h1>
             Welcome back
           </h1>
@@ -89,28 +100,22 @@ function Login() {
           <p>
             Sign in to your RAG Assistant
           </p>
-
         </div>
 
-
-        {/* Error */}
-
+        {/* Server Error */}
         {serverError && (
           <div className="auth-error">
             {serverError}
           </div>
         )}
 
-
-        {/* Form */}
-
+        {/* Login Form */}
         <form
           className="auth-form"
           onSubmit={handleSubmit(onSubmit)}
         >
 
           {/* Email */}
-
           <div className="form-group">
 
             <label htmlFor="email">
@@ -124,7 +129,6 @@ function Login() {
                   : "input-wrapper"
               }
             >
-
               <Mail size={18} />
 
               <input
@@ -139,13 +143,11 @@ function Login() {
                   pattern: {
                     value:
                       /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-
                     message:
                       "Please enter a valid email address",
                   },
                 })}
               />
-
             </div>
 
             {errors.email && (
@@ -153,12 +155,9 @@ function Login() {
                 {errors.email.message}
               </span>
             )}
-
           </div>
 
-
           {/* Password */}
-
           <div className="form-group">
 
             <div className="password-label-row">
@@ -181,7 +180,6 @@ function Login() {
 
             </div>
 
-
             <div
               className={
                 errors.password
@@ -189,7 +187,6 @@ function Login() {
                   : "input-wrapper"
               }
             >
-
               <Lock size={18} />
 
               <input
@@ -207,13 +204,11 @@ function Login() {
 
                   minLength: {
                     value: 8,
-
                     message:
                       "Password must be at least 8 characters",
                   },
                 })}
               />
-
 
               <button
                 type="button"
@@ -230,7 +225,6 @@ function Login() {
                   <Eye size={18} />
                 )}
               </button>
-
             </div>
 
             {errors.password && (
@@ -238,38 +232,30 @@ function Login() {
                 {errors.password.message}
               </span>
             )}
-
           </div>
 
-
           {/* Submit */}
-
           <button
             type="submit"
             className="auth-submit"
             disabled={isSubmitting}
           >
-
             {isSubmitting ? (
               <>
                 <Loader2
                   size={18}
                   className="spin"
                 />
-
                 Signing in...
               </>
             ) : (
               "Sign in"
             )}
-
           </button>
 
         </form>
 
-
         {/* Register */}
-
         <div className="auth-footer">
 
           <span>
@@ -283,7 +269,6 @@ function Login() {
         </div>
 
       </div>
-
     </div>
   );
 }
