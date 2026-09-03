@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, timezone
 
-from jose import jwt
+from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 from app.core.config import settings
@@ -11,6 +11,10 @@ pwd_context = CryptContext(
     deprecated="auto",
 )
 
+
+# ==========================================
+# Password Hashing
+# ==========================================
 
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
@@ -25,6 +29,10 @@ def verify_password(
         hashed_password,
     )
 
+
+# ==========================================
+# Create Access Token
+# ==========================================
 
 def create_access_token(
     data: dict,
@@ -47,3 +55,24 @@ def create_access_token(
         settings.JWT_SECRET_KEY,
         algorithm=settings.JWT_ALGORITHM,
     )
+
+
+# ==========================================
+# Decode / Validate Access Token
+# ==========================================
+
+def decode_access_token(
+    token: str,
+) -> dict | None:
+
+    try:
+        payload = jwt.decode(
+            token,
+            settings.JWT_SECRET_KEY,
+            algorithms=[settings.JWT_ALGORITHM],
+        )
+
+        return payload
+
+    except JWTError:
+        return None
