@@ -16,37 +16,62 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Restore authentication
+  // Restore authentication from stored JWT
   useEffect(() => {
-    const token = localStorage.getItem(TOKEN_KEY);
-    const savedUser = localStorage.getItem(USER_KEY);
+    const restoreSession = async () => {
+      const token = localStorage.getItem(TOKEN_KEY);
 
-    if (token) {
+      if (!token) {
+        setIsLoading(false);
+        return;
+      }
+
+      // Attach token to Axios
       apiClient.defaults.headers.common.Authorization =
         `Bearer ${token}`;
 
-      if (savedUser && savedUser !== "undefined") {
-        try {
-          setUser(JSON.parse(savedUser));
-        } catch {
-          setUser({});
-        }
-      } else {
-        setUser({});
-      }
-    }
+      try {
+        // Verify token and get the real current user
+        const response = await apiClient.get("/auth/me");
 
-    setIsLoading(false);
+        const currentUser = response.data;
+
+        localStorage.setItem(
+          USER_KEY,
+          JSON.stringify(currentUser)
+        );
+
+        setUser(currentUser);
+      } catch (error) {
+        console.error(
+          "SESSION RESTORE ERROR:",
+          error.response?.data || error
+        );
+
+        // Token is invalid/expired
+        localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(USER_KEY);
+
+        delete apiClient.defaults.headers.common.Authorization;
+
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    restoreSession();
   }, []);
 
   // Login
-  const login = (token, userData = {}) => {
+  const login = (token, userData) => {
     if (!token) {
       console.error("Login failed: no access token.");
       return;
     }
 
     localStorage.setItem(TOKEN_KEY, token);
+
     localStorage.setItem(
       USER_KEY,
       JSON.stringify(userData)
